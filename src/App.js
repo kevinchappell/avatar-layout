@@ -1,25 +1,41 @@
-import logo from './logo.svg';
-import './App.css';
+import { useMemo, useState } from 'react'
+import Avatar from '@mui/material/Avatar'
+import { useInterval, useMeasure } from 'react-use'
+import { CSSTransition, TransitionGroup } from 'react-transition-group'
 
-function App() {
+import { animationSpeed, avatarSize, createUser, generatePositionMap } from './utils'
+import './App.css'
+
+export default function App() {
+  const [users, setUsers] = useState([createUser()])
+  const [ref, { width, height }] = useMeasure()
+  const positionMap = useMemo(() => generatePositionMap(width, height), [width, height])
+
+  useInterval(() => {
+    if (users.length < positionMap.length) {
+      setUsers([...users, createUser()])
+    }
+  }, animationSpeed)
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="mockMap" ref={ref}>
+        <TransitionGroup className="todo-list">
+          {users.map((user, index) => (
+            <CSSTransition key={`user-${index}`} timeout={animationSpeed} classNames="avatar">
+              <span className="avatarWrap" style={{ left: positionMap[index]?.x, top: positionMap[index]?.y }}>
+                <Avatar
+                  {...user}
+                  sx={{
+                    width: avatarSize,
+                    height: avatarSize,
+                  }}
+                />
+              </span>
+            </CSSTransition>
+          ))}
+        </TransitionGroup>
+      </div>
     </div>
-  );
+  )
 }
-
-export default App;

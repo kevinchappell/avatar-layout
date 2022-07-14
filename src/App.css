@@ -1,5 +1,9 @@
 .App {
   text-align: center;
+  min-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .App-logo {
@@ -35,4 +39,30 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.avatarWrap {
+  position: absolute;
+  transform: translate(-50%, -50%);
+}
+.mockMap {
+  position: relative;
+  width: 800px;
+  height: 500px;
+  background: url(https://poormanvr.s3.us-east-2.amazonaws.com/map/gatherly-office.jpg) no-repeat center center;
+}
+
+.avatar-enter {
+  opacity: 0;
+}
+.avatar-enter-active {
+  opacity: 1;
+  transition: opacity 333ms ease-in;
+}
+.avatar-exit {
+  opacity: 1;
+}
+.avatar-exit-active {
+  opacity: 0;
+  transition: opacity 333ms ease-in;
 }
